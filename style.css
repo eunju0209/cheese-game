@@ -88,6 +88,12 @@ body {
 .game__field {
   width: 100%;
   height: 100%;
+  position: relative;
+}
+
+.cheese,
+.mouse {
+  position: absolute;
 }
 
 .pop-up {
