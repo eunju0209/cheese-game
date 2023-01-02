@@ -1,5 +1,6 @@
 import Field from './field.js';
 import PopUp from './popup.js';
+import { playBackground, playCheese, stopBackground } from './sound.js';
 
 const cheese = {
   className: 'cheese',
@@ -51,12 +52,14 @@ export default class Game {
     this.showTimerAndScore();
     this.#startTimer();
     this.gameScore.textContent = cheese.count;
+    playBackground();
   }
 
   stop(status) {
     this.started = false;
     clearInterval(this.timer);
     this.popUp.showWidthText(status);
+    stopBackground();
   }
 
   init() {
@@ -70,6 +73,7 @@ export default class Game {
     }
     const target = e.target;
     if (target.matches('.cheese')) {
+      playCheese();
       target.remove();
       this.score++;
       this.updateScore();

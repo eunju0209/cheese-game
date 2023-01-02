@@ -1,3 +1,5 @@
+import { playAlert, playMouse, playWin } from './sound.js';
+
 export default class PopUp {
   constructor() {
     this.popUp = document.querySelector('.pop-up');
@@ -19,12 +21,15 @@ export default class PopUp {
     switch (status) {
       case 'win':
         message = 'YOU WON 🎉';
+        playWin();
         break;
       case 'lose':
         message = 'YOU LOST 💩';
+        playMouse();
         break;
       case 'cancle':
         message = 'REPLAY ❓';
+        playAlert();
         break;
       default:
         throw new Error(`not valid '${status}'`);
