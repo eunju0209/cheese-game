@@ -1,4 +1,5 @@
 import Field from './field.js';
+import PopUp from './popup.js';
 
 const cheese = {
   className: 'cheese',
@@ -26,6 +27,11 @@ export default class Game {
     this.field = new Field(cheese, mouse);
     this.field.setOnClickListener(this.onItemClick);
 
+    this.popUp = new PopUp();
+    this.popUp.setOnClickListener(() => {
+      this.start();
+    });
+
     this.gameTimer = document.querySelector('.game__timer');
     this.gameScore = document.querySelector('.game__score');
     this.#gameBtn = document.querySelector('.game__btn');
@@ -33,7 +39,7 @@ export default class Game {
       if (!this.started) {
         this.start();
       } else {
-        this.stop();
+        this.stop('cancle');
       }
     });
   }
@@ -47,8 +53,10 @@ export default class Game {
     this.gameScore.textContent = cheese.count;
   }
 
-  stop() {
+  stop(status) {
     this.started = false;
+    clearInterval(this.timer);
+    this.popUp.showWidthText(status);
   }
 
   init() {
@@ -65,6 +73,12 @@ export default class Game {
       target.remove();
       this.score++;
       this.updateScore();
+      if (this.score === cheese.count) {
+        this.stop('win');
+      }
+    }
+    if (target.matches('.mouse')) {
+      this.stop('lose');
     }
   };
 
@@ -78,6 +92,7 @@ export default class Game {
     this.timer = setInterval(() => {
       if (time === 0) {
         clearInterval(this.timer);
+        this.stop(this.score === cheese ? 'win' : 'lose');
         return;
       }
       this.#updateTimerText(--time);
