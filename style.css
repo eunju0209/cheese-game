@@ -34,8 +34,7 @@ body {
   padding: 20px 0;
 }
 
-.game__btn,
-.pop-up__btn {
+.btn {
   width: 55px;
   height: 55px;
   background-color: #66a675;
@@ -46,8 +45,7 @@ body {
   transition: transform 150ms ease-in;
 }
 
-.game__btn:hover,
-.pop-up__btn:hover {
+.btn:hover {
   transform: scale(1.1);
 }
 
@@ -110,6 +108,16 @@ body {
 
 .pop-up.visible {
   visibility: visible;
+}
+
+.pop-up__level,
+.pop-up__refresh {
+  display: none;
+}
+
+.pop-up__level.visible,
+.pop-up__refresh.visible {
+  display: block;
 }
 
 .pop-up__message {

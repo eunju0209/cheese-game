@@ -2,36 +2,32 @@ import Field from './field.js';
 import PopUp from './popup.js';
 import { playBackground, playCheese, stopBackground } from './sound.js';
 
-const cheese = {
-  className: 'cheese',
-  count: 5,
-  imgPath: './img/cheese.png',
-  size: 50,
-};
-
-const mouse = {
-  className: 'mouse',
-  count: 5,
-  imgPath: './img/mouse.png',
-  size: 60,
-};
-
 export default class Game {
   #gameBtn;
 
-  constructor() {
+  constructor(cheese, mouse) {
+    this.cheese = cheese;
+    this.mouse = mouse;
+
     this.gameDuration = 5;
     this.started = false;
     this.timer;
     this.score = 0;
 
-    this.field = new Field(cheese, mouse);
-    this.field.setOnClickListener(this.onItemClick);
-
     this.popUp = new PopUp();
-    this.popUp.setOnClickListener(() => {
+    this.popUp.setOnRefreshListener(() => {
       this.start();
     });
+    this.popUp.setOnLevelListener(() => {
+      this.gameDuration += 1;
+      this.cheese = { ...this.cheese, count: this.cheese.count + 2 };
+      this.mouse = { ...this.mouse, count: this.mouse.count + 2 };
+      this.field = new Field(this.cheese, this.mouse);
+      this.start();
+    });
+
+    this.field = new Field(this.cheese, this.mouse);
+    this.field.setOnClickListener(this.onItemClick);
 
     this.gameTimer = document.querySelector('.game__timer');
     this.gameScore = document.querySelector('.game__score');
@@ -51,7 +47,7 @@ export default class Game {
     this.#showStopBtn();
     this.showTimerAndScore();
     this.#startTimer();
-    this.gameScore.textContent = cheese.count;
+    this.gameScore.textContent = this.cheese.count;
     playBackground();
   }
 
@@ -77,7 +73,7 @@ export default class Game {
       target.remove();
       this.score++;
       this.updateScore();
-      if (this.score === cheese.count) {
+      if (this.score === this.cheese.count) {
         this.stop('win');
       }
     }
@@ -87,7 +83,7 @@ export default class Game {
   };
 
   updateScore() {
-    this.gameScore.textContent = cheese.count - this.score;
+    this.gameScore.textContent = this.cheese.count - this.score;
   }
 
   #startTimer() {
@@ -96,7 +92,7 @@ export default class Game {
     this.timer = setInterval(() => {
       if (time === 0) {
         clearInterval(this.timer);
-        this.stop(this.score === cheese ? 'win' : 'lose');
+        this.stop(this.score === this.cheese.count ? 'win' : 'lose');
         return;
       }
       this.#updateTimerText(--time);
