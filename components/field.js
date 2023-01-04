@@ -37,16 +37,16 @@ export default class Field {
       template.innerHTML = `<img class=${className} src=${imgPath} alt=${className} />`;
 
       const gameItem = template.content.firstElementChild;
-      const x = randomNumber(x1, x2);
-      const y = randomNumber(y1, y2);
+      const x = this.#randomNumber(x1, x2);
+      const y = this.#randomNumber(y1, y2);
       gameItem.style.left = `${x}px`;
       gameItem.style.top = `${y}px`;
 
       this.#field.appendChild(gameItem);
     }
   }
-}
 
-function randomNumber(min, max) {
-  return Math.random() * (max - min) + min;
+  #randomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 }

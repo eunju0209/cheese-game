@@ -94,6 +94,14 @@ body {
   position: absolute;
 }
 
+.cheese {
+  transition: transform 100ms ease-in;
+}
+
+.cheese:hover {
+  transform: scale(1.1);
+}
+
 .pop-up {
   visibility: hidden;
   display: flex;
